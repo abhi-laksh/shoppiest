@@ -18,9 +18,9 @@ class Product extends Model
         return $this->hasManyThrough('App\Review', 'App\User');
     }
 
-    public function brands()
+    public function brand()
     {
-        return $this->belongsToMany('App\Brand');
+        return $this->belongsTo('App\Brand');
     }
 
     public function orders()

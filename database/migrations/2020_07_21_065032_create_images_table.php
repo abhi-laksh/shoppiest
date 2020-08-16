@@ -20,6 +20,8 @@ class CreateImagesTable extends Migration
             $table->string('mime_type');
             $table->string('alt');
 
+            $table->boolean('is_primary')->default(0);
+
             $table->integer('imageable_id');
             $table->string('imageable_type');
 

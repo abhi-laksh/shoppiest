@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['prefix' => 'admin'], function () {
-    
+
     Route::group(['prefix' => 'category'], function () {
 
         Route::get('/', 'API\Admin\AdminCategoryController@index')->name('admin.category.index');
@@ -23,10 +23,9 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('/getcode', 'API\Admin\AdminCategoryController@getNewCode')->name('admin.category.getNewCode');
 
-        Route::post('/update/{id}', 'API\Admin\AdminCategoryController@update')->name('admin.category.update');
+        Route::put('/update/{id}', 'API\Admin\AdminCategoryController@update')->name('admin.category.update');
 
-        Route::get('/delete/{id}', 'API\Admin\AdminCategoryController@delete')->name('admin.category.delete');
-    
+        Route::delete('/delete/{id}', 'API\Admin\AdminCategoryController@delete')->name('admin.category.delete');
     });
 
     Route::group(['prefix' => 'subcategory'], function () {
@@ -37,10 +36,9 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('/getcode', 'API\Admin\AdminSubCategoryController@getNewCode')->name('admin.subcategory.getNewCode');
 
-        Route::post('/update/{id}', 'API\Admin\AdminSubCategoryController@update')->name('admin.subcategory.update');
+        Route::put('/update/{id}', 'API\Admin\AdminSubCategoryController@update')->name('admin.subcategory.update');
 
-        Route::get('/delete/{id}', 'API\Admin\AdminSubCategoryController@delete')->name('admin.subcategory.delete');
-    
+        Route::delete('/delete/{id}', 'API\Admin\AdminSubCategoryController@delete')->name('admin.subcategory.delete');
     });
 
     Route::group(['prefix' => 'brand'], function () {
@@ -51,10 +49,9 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('/getcode', 'API\Admin\AdminBrandController@getNewCode')->name('admin.brand.getNewCode');
 
-        Route::post('/update/{id}', 'API\Admin\AdminBrandController@update')->name('admin.brand.update');
+        Route::put('/update/{id}', 'API\Admin\AdminBrandController@update')->name('admin.brand.update');
 
-        Route::get('/delete/{id}', 'API\Admin\AdminBrandController@delete')->name('admin.brand.delete');
-    
+        Route::delete('/delete/{id}', 'API\Admin\AdminBrandController@delete')->name('admin.brand.delete');
     });
 
     Route::group(['prefix' => 'product'], function () {
@@ -63,12 +60,17 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::post('/create', 'API\Admin\AdminProductController@create')->name('admin.product.create');
 
-        // Route::get('/getcode', 'API\Admin\AdminProductController@getNewCode')->name('admin.product.getNewCode');
+        Route::get('/getcode', 'API\Admin\AdminProductController@getNewCode')->name('admin.product.getNewCode');
 
-        // Route::post('/update/{id}', 'API\Admin\AdminProductController@update')->name('admin.product.update');
+        Route::put('/update/{id}', 'API\Admin\AdminProductController@update')->name('admin.product.update');
+        
+        Route::delete('/{id}/image/{image_id}/remove', 'API\Admin\AdminProductController@removeImage')->name('admin.product.remove.image');
 
-        // Route::get('/delete/{id}', 'API\Admin\AdminProductController@delete')->name('admin.product.delete');
-    
+        Route::delete('/{id}/images/remove', 'API\Admin\AdminProductController@removeAllImages')->name('admin.product.remove.images');
+
+        Route::delete('/delete/{id}', 'API\Admin\AdminProductController@delete')->name('admin.product.delete');
+        
+
     });
     
 });
