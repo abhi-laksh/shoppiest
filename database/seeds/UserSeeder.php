@@ -41,6 +41,7 @@ class UserSeeder extends Seeder
             $user->password = $value['password'];
 
             $role->users()->save($user);
+            // $user->role()->save($role);
         }
     }
 }

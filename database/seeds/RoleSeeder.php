@@ -12,17 +12,18 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
+        // Must always be lowercase
         $data = [
             // [
             //     "name" => "Owner",
             //     "description" => "The owner of the company.",
             // ],
             [
-                "name" => "Admin",
+                "name" => "admin",
                 "description" => "You know who they are and what they can do.",
             ],
             [
-                "name" => "Customer",
+                "name" => "customer",
                 "description" => "The most important person.",
             ],
         ];

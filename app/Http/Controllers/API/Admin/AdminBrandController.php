@@ -10,15 +10,6 @@ use App\SubCategory;
 class AdminBrandController extends Controller
 {
 
-    public function index(Request $request)
-    {
-        $brands = Brand::with('subCategories',"subCategories.category")->get();
-
-        return response()->json([
-            "brands" => $brands->toArray()
-        ], 200);
-    }
-
     public function create(Request $request)
     {
 

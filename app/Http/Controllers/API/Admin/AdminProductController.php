@@ -12,14 +12,6 @@ use Illuminate\Support\Facades\File;
 
 class AdminProductController extends Controller 
 {
-    public function index(Request $request)
-    {
-        $product = Product::with('brand', "images", "subCategory", "subCategory.category")->get();
-
-        return response()->json([
-            "products" => $product->toArray()
-        ], 200);
-    }
 
     public function create(Request $request)
     {

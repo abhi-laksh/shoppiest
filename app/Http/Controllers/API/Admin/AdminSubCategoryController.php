@@ -9,14 +9,6 @@ use App\SubCategory;
 
 class AdminSubCategoryController extends Controller
 {
-    public function index(Request $request)
-    {
-        $sub_categories = SubCategory::with('category','brands')->get();
-
-        return response()->json([
-            "sub_categories" => $sub_categories->toArray()
-        ], 200);
-    }
 
     public function create(Request $request)
     {

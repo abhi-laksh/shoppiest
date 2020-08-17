@@ -4,16 +4,16 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\SubCategory;
+use Illuminate\Support\Facades\Auth;
 
-class SubCategoryController extends Controller
+class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $sub_categories = SubCategory::with('category', 'brands')->get();
-
+        $user = Auth::user();
+        
         return response()->json([
-            "sub_categories" => $sub_categories->toArray()
+            "user" => $user
         ], 200);
     }
 }

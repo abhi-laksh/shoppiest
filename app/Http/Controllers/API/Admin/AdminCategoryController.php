@@ -8,16 +8,7 @@ use App\Http\Controllers\Controller;
 
 class AdminCategoryController extends Controller
 {
-
-    public function index(Request $request)
-    {
-        $categories = Category::with('subCategories')->get();
-
-        return response()->json([
-            "categories" => $categories->toArray()
-        ], 200);
-    }
-
+    
     public function create(Request $request)
     {
         $this->validate($request, [
@@ -41,6 +32,7 @@ class AdminCategoryController extends Controller
 
     public function update(Request $request, $id)
     {
+
         $this->validate($request, [
             "code" => "required",
             "name" => "required|max:255",

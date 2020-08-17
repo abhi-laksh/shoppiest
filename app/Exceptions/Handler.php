@@ -4,6 +4,10 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Laravel\Passport\Exceptions\MissingScopeException;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -46,6 +50,19 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($request->wantsJson()) {
+            if (($exception instanceof MissingScopeException || $exception instanceof AccessDeniedException)) {
+                return response()->json([
+                    "error" => "Access Denied!"
+                ], 403);
+            }
+
+            if ($exception instanceof NotFoundHttpException) {
+                return response()->json([
+                    "error" => "API route does not exist."
+                ], 403);
+            }
+        }
         return parent::render($request, $exception);
     }
 }
