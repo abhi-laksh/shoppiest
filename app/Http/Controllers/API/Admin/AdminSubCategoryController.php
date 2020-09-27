@@ -16,6 +16,7 @@ class AdminSubCategoryController extends Controller
             "code" => "required",
             "category_id" => "required",
             "name" => "required|max:255",
+            "abbreviation" => "required|max:255",
             "description" => "required|max:255",
         ]);
 
@@ -46,6 +47,7 @@ class AdminSubCategoryController extends Controller
             "code" => "required",
             "category_id" => "required",
             "name" => "required|max:255",
+            "abbreviation" => "required|max:255",
             "description" => "required|max:255",
         ]);
 
@@ -106,7 +108,7 @@ class AdminSubCategoryController extends Controller
 
     protected function generateCode()
     {
-        $data = SubCategory::select('id', 'code')->orderBy('id', 'desc')->first();
+        $data = SubCategory::withTrashed()->select('id', 'code')->orderBy('id', 'desc')->first();
 
         if (!empty($data['code'])) {
 

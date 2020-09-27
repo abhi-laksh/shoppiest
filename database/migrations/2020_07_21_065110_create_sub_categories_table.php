@@ -17,10 +17,14 @@ class CreateSubCategoriesTable extends Migration
             $table->bigIncrements('id');
             
             $table->string('code')->unique();
+
             $table->string('name')->unique();
+
+            $table->string('abbreviation')->unique();
+
             $table->string('description');
 
-            $table->integer('category_id')->unsigned()->index();
+            $table->bigInteger('category_id')->unsigned()->index();
 
             $table->boolean('is_active')->default(1);
 

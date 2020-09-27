@@ -8,9 +8,10 @@ use App\Http\Controllers\Controller;
 use App\Image;
 use App\Product;
 use App\SubCategory;
+use App\Variant;
 use Illuminate\Support\Facades\File;
 
-class AdminProductController extends Controller 
+class AdminProductController extends Controller
 {
 
     public function create(Request $request)
@@ -19,18 +20,14 @@ class AdminProductController extends Controller
         $this->validate($request, [
             "code" => "required",
             "name" => "required|max:255",
-            "short_description" => "required",
+
+            "private_description" => "nullable|max:255",
+            "short_description" => "required|max:255",
             "description" => "required|max:255",
-            "selling_price" => "required",
-            "cost_price" => "required",
-            "stock" => "required",
-            "primary_img" => "required|image|mimes:jpeg,png,jpg",
-            // in front end -> secondary_imgs[]
-            "secondary_imgs" => "nullable",
 
-            "image_title" => "nullable|regex:/[a-zA-Z0-9&\-\/(),.\|$%:;'\" @+={}\[\]]+/gm|max:255",
-            "image_alt" => "nullable|regex:/[a-zA-Z0-9&\-\/(),.\|$%:;'\" @+={}\[\]]+/gm|max:255",
+            
 
+            "variant_id" => "required",
             "sub_category_id" => "required",
             "brand_id" => "required",
         ]);
@@ -52,43 +49,17 @@ class AdminProductController extends Controller
                 "error" => "sub category not found.",
             ], 404);
         }
-
-        //defaults
-        $file_name = ($request->name);
-        $primary_img = $request->file('primary_img');
-
-        $secondary_imgs = $request->file('secondary_imgs');
-
-        if ((isset($secondary_imgs) && (sizeof($secondary_imgs) > 5))) {
-            return response()->json([
-                "error" => "Max 5 images are allowed for secondary images.",
-            ], 402);
-        }
-
-        // max 2MB in bytes
-        if ($primary_img->getSize() > 2097152) {
-            return response()->json([
-                "error" => "Max file size in 2MB",
-            ], 402);
-        }
-
-        foreach ($secondary_imgs as $key => $value) {
-            if ($value->getSize() > 2097152) {
-                return response()->json([
-                    "error" => "Max file size in 2MB",
-                ], 402);
-            }
-        }
+        
+        $variant = Variant::find($request->variant_id);
 
         $product = new Product();
 
         $product->code = $request->code;
-        $product->name = $file_name;
+        $product->name = ($request->name);
         $product->short_description = $request->short_description;
         $product->description = $request->description;
-        $product->selling_price = $request->selling_price;
-        $product->cost_price = $request->cost_price;
-        $product->stock = $request->stock;
+
+
 
         $product->brand()->associate($brand);
 
@@ -96,43 +67,6 @@ class AdminProductController extends Controller
 
         $product->save();
 
-        // image details;
-
-        //primary img
-
-        $primary_ext = "." . $primary_img->getClientOriginalExtension();
-
-        $primary_img->move(public_path('images'), ($file_name . $primary_ext));
-
-        $image = new Image();
-
-        $image->mime_type = $primary_img->getClientMimeType();
-        $image->alt =  ($request->image_alt ? $request->image_alt : $file_name);
-        $image->src = ($file_name . $primary_ext);
-        $image->is_primary = 1;
-
-        $image->imageable_id = $product->id;
-        $image->imageable_type = get_class($product);
-
-        $product->images()->save($image);
-
-        foreach ($secondary_imgs as $key => $value) {
-
-            $ext = "." . $value->getClientOriginalExtension();
-
-            $value->move(public_path('images'), ($file_name . $key . $ext));
-
-            $image = new Image();
-
-            $image->mime_type = $value->getClientMimeType();
-            $image->alt =  ($request->image_alt ? $request->image_alt : $file_name);
-            $image->src = ($file_name . $key . $ext);
-
-            $image->imageable_id = $product->id;
-            $image->imageable_type = get_class($product);
-
-            $product->images()->save($image);
-        }
 
         return response()->json([
             "success" =>  "Successfully created new product",
@@ -145,18 +79,11 @@ class AdminProductController extends Controller
         $this->validate($request, [
             "code" => "required",
             "name" => "required|max:255",
+            "private_description" => "nullable|max:255",
             "short_description" => "required",
             "description" => "required|max:255",
-            "selling_price" => "required",
-            "cost_price" => "required",
-            "stock" => "required",
-            "primary_img" => "nullable|image|mimes:jpeg,png,jpg",
-            // in front end -> secondary_imgs[]
-            "secondary_imgs" => "nullable",
 
-            "image_title" => "nullable|regex:/[a-zA-Z0-9&\-\/(),.\|$%:;'\" @+={}\[\]]+/gm|max:255",
-            "image_alt" => "nullable|regex:/[a-zA-Z0-9&\-\/(),.\|$%:;'\" @+={}\[\]]+/gm|max:255",
-
+            "variant_id" => "required",
             "sub_category_id" => "required",
             "brand_id" => "required",
         ]);
@@ -185,6 +112,9 @@ class AdminProductController extends Controller
         $primary_img = $request->file('primary_img');
         $secondary_imgs = $request->file('secondary_imgs');
 
+
+        // sku - br-cat-sub-code-var(attr)
+
         $product = Product::find($id);
 
         if ($product === null) {
@@ -193,14 +123,6 @@ class AdminProductController extends Controller
             ], 404);
         }
 
-        if (
-            (($product->images()->where('is_primary', 1)->first()) === null)
-            && !(isset($primary_img))
-        ) {
-            return response()->json([
-                "error" => "primary image is important!"
-            ], 400);
-        }
 
         $product->code = $request->code;
         $product->name = $file_name;
@@ -219,7 +141,7 @@ class AdminProductController extends Controller
 
         // handles image logic
 
-        if ((!isset($primary_img) && !isset($secondary_imgs))) {
+        /* if ((!isset($primary_img) && !isset($secondary_imgs))) {
             return response()->json([
                 "success" => "product updated successfully."
             ], 200);
@@ -353,7 +275,7 @@ class AdminProductController extends Controller
                     "success" =>  "successfully updated product",
                 ], 200);
             }
-        }
+        } */
     }
 
     public function removeAllImages(Request $request, $id)
@@ -408,7 +330,6 @@ class AdminProductController extends Controller
         ], 200);
     }
 
-    
     public function delete(Request $request, $id)
     {
         $data = Product::find($id);
@@ -428,15 +349,39 @@ class AdminProductController extends Controller
 
     public function getNewCode(Request $request)
     {
-        $code = $this->generateCode();
+        $code = $this->generateCode($request, 21);
         return response()->json([
             "product_code" => $code
         ], 200);
     }
 
-    protected function generateCode()
+    // if front end fails to generate use this
+    public function generateCode(Request $request, $variant_id)
     {
-        $data = Product::select('id', 'code')->orderBy('id', 'desc')->first();
+        $product_code = Product::withTrashed()->select('id', 'code')->orderBy('id', 'desc')->first();
+
+        if (!empty($product_code['code'])) {
+
+            $str = $product_code['code'];
+
+            $matches = array();
+
+            preg_match('/[0-9]{5}$/', $str, $matches);
+
+            $num = str_pad(($matches[0] + 1), 5, '0', STR_PAD_LEFT);
+
+            $code = $num;
+        } else {
+            $code = "000001";
+        }
+
+        return $code;
+
+    }
+
+    /* protected function generateCode()
+    {
+        $data = Product::withTrashed()->select('id', 'code')->orderBy('id', 'desc')->first();
 
         if (!empty($data['code'])) {
 
@@ -454,5 +399,5 @@ class AdminProductController extends Controller
         }
 
         return $code;
-    }
+    } */
 }

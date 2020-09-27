@@ -19,27 +19,30 @@ class BrandSeeder extends Seeder
             [
                 "name" => "Apple",
                 "description" => "Apple is best",
+                "abbreviation" => "AP",
                 "sub_category_ids" => [1, 2]
             ],
 
             [
                 "name" => "Xiaomi",
                 "description" => "Xiaomi is best",
+                "abbreviation" => "XM",
                 "sub_category_ids" => [1]
             ],
 
             [
                 "name" => "American Tourister",
                 "description" => "American Tourister is best",
+                "abbreviation" => "AMT",
                 "sub_category_ids" => [3]
             ],
 
             [
                 "name" => "Nike",
                 "description" => "Nike is best",
+                "abbreviation" => "NK",
                 "sub_category_ids" => [6]
             ],
-
         ];
 
         foreach ($data as $key => $value) {
@@ -49,6 +52,7 @@ class BrandSeeder extends Seeder
 
             $brand->code = "SHPSTBR000000" . ($key + 1);
             $brand->name = $value['name'];
+            $brand->abbreviation = $value['abbreviation'];
             $brand->description = $value['description'];
 
             $brand->save();

@@ -17,7 +17,10 @@ class CreateOrdersTable extends Migration
             $table->bigIncrements('id');
 
             $table->string('order_id');
+            
             $table->string('order_status');
+            
+            //dates
             $table->string('placed_at');
             $table->string('delivered_at')->nullable();
             $table->string('shipped_at')->nullable();

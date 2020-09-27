@@ -14,6 +14,7 @@ class AdminCategoryController extends Controller
         $this->validate($request, [
             "code" => "required",
             "name" => "required|max:255",
+            "abbreviation" => "required|max:255",
             "description" => "required|max:255",
         ]);
 
@@ -21,6 +22,7 @@ class AdminCategoryController extends Controller
 
         $categ->code = $request->code;
         $categ->name = $request->name;
+        $categ->abbreviation = $request->abbreviation;
         $categ->description = $request->description;
 
         $categ->save();
@@ -36,6 +38,7 @@ class AdminCategoryController extends Controller
         $this->validate($request, [
             "code" => "required",
             "name" => "required|max:255",
+            "abbreviation" => "required|max:255",
             "description" => "required|max:255",
         ]);
 
@@ -53,6 +56,7 @@ class AdminCategoryController extends Controller
 
         $categ->code = $request->code;
         $categ->name = $request->name;
+        $categ->abbreviation = $request->abbreviation;
         $categ->description = $request->description;
 
         $categ->save();
@@ -89,7 +93,7 @@ class AdminCategoryController extends Controller
 
     protected function generateCode()
     {
-        $data = Category::select('id', 'code')->orderBy('id', 'desc')->first();
+        $data = Category::withTrashed()->select('id', 'code')->orderBy('id', 'desc')->first();
 
         if (!empty($data['code'])) {
 

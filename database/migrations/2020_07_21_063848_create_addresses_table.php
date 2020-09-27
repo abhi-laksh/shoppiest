@@ -17,8 +17,8 @@ class CreateAddressesTable extends Migration
             $table->bigIncrements('id');     
 
             $table->string('full_name');
-            $table->string('phone');
-            $table->string('alternate_phone')->nullable();
+            $table->string('phone')->unique();
+            $table->string('alternate_phone')->unique()->nullable();
             $table->string('house_number');
             $table->string('street');
             $table->string('landmark')->nullable();

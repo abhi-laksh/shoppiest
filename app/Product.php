@@ -22,10 +22,10 @@ class Product extends Model
     {
         return $this->belongsTo('App\Brand');
     }
-
+    // has many orders through user
     public function orders()
     {
-        return $this->belongsToMany('App\Order');
+        return $this->hasManyThrough('App\Order','App\User');
     }
 
     public function cart()
@@ -39,11 +39,14 @@ class Product extends Model
         return $this->belongsTo('App\SubCategory');
     }
 
-    
     public function images()
     {
-        return $this->morphMany('App\Image','imageable');
+        return $this->morphMany('App\Image', 'imageable');
     }
-
+    
+    public function variants()
+    {
+        return $this->hasMany('App\Variant');
+    }
     
 }

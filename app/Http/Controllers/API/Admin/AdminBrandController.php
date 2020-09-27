@@ -17,6 +17,7 @@ class AdminBrandController extends Controller
             "code" => "required",
             "sub_category_ids" => "required",
             "name" => "required|max:255",
+            "abbreviation" => "required|max:255",
             "description" => "required|max:255",
         ]);
 
@@ -52,6 +53,7 @@ class AdminBrandController extends Controller
             "sub_category_ids" => "required",
             "deleted_sub_category_ids" => "nullable",
             "name" => "required|max:255",
+            "abbreviation" => "required|max:255",
             "description" => "required|max:255",
         ]);
 
@@ -74,8 +76,6 @@ class AdminBrandController extends Controller
                 "error" => "brand not found."
             ], 404);
         }
-
-        $notFound = array();
 
         $brand->code = $request->code;
         $brand->name = $request->name;
@@ -112,6 +112,7 @@ class AdminBrandController extends Controller
         }
 
         $data->subCategories()->detach();
+        
         $data->delete();
 
         return response()->json([
@@ -130,7 +131,7 @@ class AdminBrandController extends Controller
 
     protected function generateCode()
     {
-        $data = Brand::select('id', 'code')->orderBy('id', 'desc')->first();
+        $data = Brand::withTrashed()->select('id', 'code')->orderBy('id', 'desc')->first();
 
         if (!empty($data['code'])) {
 

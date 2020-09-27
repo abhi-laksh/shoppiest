@@ -50,11 +50,11 @@ class User extends Authenticatable
 
     public function reviews()
     {
-        return $this->hasMany('App\Review');
+        return $this->belongsToMany('App\Review');
     }
 
     public function addresses()
     {
-        return $this->hasMany('App\Address');
+        return $this->belongsToMany('App\Address');
     }
 }

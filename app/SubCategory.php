@@ -25,4 +25,5 @@ class SubCategory extends Model
     {
         return $this->belongsToMany('App\Brand');
     }
+
 }

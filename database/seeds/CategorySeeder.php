@@ -16,18 +16,22 @@ class CategorySeeder extends Seeder
             [
                 "name" => "Electronic",
                 "description" => "Electronics is a category",
+                "abbreviation" => "EL",
             ],
             [
                 "name" => "Fashion",
                 "description" => "Fashion is a category",
+                "abbreviation" => "FN",
             ],
             [
                 "name" => "Travel",
                 "description" => "Travel is a category",
+                "abbreviation" => "TR",
             ],
             [
                 "name" => "Education",
                 "description" => "Educations is a category",
+                "abbreviation" => "ED",
             ]
         ];
 
@@ -35,6 +39,7 @@ class CategorySeeder extends Seeder
             $cat = new Category();
             $cat->code = "SHPSTCAT000000".($key+1);
             $cat->name = $value['name'];
+            $cat->abbreviation = $value['abbreviation'];
             $cat->description = $value['description'];
             $cat->save();
         }

@@ -1,0 +1,51 @@
+{
+    "menus": [{
+        "menuId": "20208218353816R3ZTHWN5U30021",
+        "menuName": "Product Management",
+        "basePath": null,
+        "iconName": "AssessmentIcon",
+        "childrens": [{
+                "menuId": "20208218353816R3ZTHWN5U30022",
+                "menuName": "Category",
+                "iconName": "AssessmentIcon",
+                "basePath": "/category",
+                "childrens": null
+            },
+            {
+                "menuId": "20208218353816R3ZTHWN5U30023",
+                "menuName": "Product",
+                "iconName": "AssessmentIcon",
+                "basePath": "/product",
+                "childrens": null
+            },
+            {
+                "menuId": "20208218353816R3ZTHWN5U30023",
+                "menuName": "Sub Category",
+                "iconName": "AssessmentIcon",
+                "basePath": "/sub-category",
+                "childrens": null
+            },
+            {
+                "menuId": "20208218353816R3ZTHWN5U30023",
+                "menuName": "Brand",
+                "iconName": "Brand",
+                "basePath": "/brand",
+                "childrens": null
+            },
+            {
+                "menuId": "20208218353816R3ZTHWN5U30023",
+                "menuName": "Variant",
+                "iconName": "AssessmentIcon",
+                "basePath": "/variant",
+                "childrens": null
+            },
+            {
+                "menuId": "20208218353816R3ZTHWN5U30023",
+                "menuName": "Attribute",
+                "iconName": "AssessmentIcon",
+                "basePath": "/attribute",
+                "childrens": null
+            }
+        ]
+    }]
+}

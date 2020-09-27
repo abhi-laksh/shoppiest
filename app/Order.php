@@ -8,11 +8,16 @@ class Order extends Model
 {
     protected $table = 'orders';
 
-    // has many product through user
-    public function productsUser()
-    {
-        return $this->hasManyThrough('App\Product', 'App\User');
-    }
+    // public function product()
+    // {
+    //     return $this->belongsTo('App\Product');
+    // }
+
+
+    /* 
+        TODO: has many payments thrugh user
+    */
+
 
     public function user()
     {

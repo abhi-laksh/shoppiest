@@ -17,8 +17,13 @@ class CreateCategoriesTable extends Migration
             $table->bigIncrements('id');
             
             $table->string('code')->unique();
+
             $table->string('name')->unique();
+            
+            $table->string('abbreviation')->unique();
+
             $table->string('description')->nullable();
+
             $table->boolean('is_active')->default(1);
 
             $table->softDeletes();

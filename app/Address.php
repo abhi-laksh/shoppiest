@@ -12,9 +12,4 @@ class Address extends Model
     {
         return $this->belongsToMany('App\Order');
     }
-
-    public function addresses()
-    {
-        return $this->belongsToMany('App\Address');
-    }
 }

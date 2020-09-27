@@ -15,19 +15,35 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
-            
-            $table->string('code')->unique();
+            /* 
+                Prefix1 - BRAND
+                Prefix2 - CAT
+                Prefix3 - SUBCAT
+                Number - 00000
+                Suffix[] - Attirbutes (Color, Size)
+
+                Brand- Mufti
+                E.g - MFT-MEN-TSH-00000-XL-YLW,
+                E.g - MFT-MEN-SHR-00000-M-BLK,
+
+                will be generated afterwards
+            */
+
+            $table->string('code');
+
+            $table->string('sku');
+
             $table->string('name')->unique();
+            
             $table->string('short_description');
             $table->string('description');
-            $table->string('selling_price');
-            $table->string('cost_price');
-            $table->string('stock');
+            
+            // for admin personal usage
+            $table->string('private_description')->nullable();
 
             $table->integer('sub_category_id')->unsigned()->index();
-            $table->integer('brand_id')->unsigned()->index();
 
-            $table->boolean('is_active')->default(1);
+            $table->integer('brand_id')->unsigned()->index();
             
             $table->softDeletes();
 
